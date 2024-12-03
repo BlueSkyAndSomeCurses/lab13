@@ -1,5 +1,6 @@
 package ua.edu.ucu.apps.task3;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,8 +20,15 @@ public class WebScrapper {
       // Construct the search URL
       String searchUrl = baseUrl + "/search?q=" + company.replace(" ", "+");
 
-      // Fetch and parse the HTML document
-      Document doc = Jsoup.connect(searchUrl).get();
+
+      Connection connection = Jsoup.connect(searchUrl)
+          .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
+          .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+          .header("Accept-Language", "en-US,en;q=0.9")
+          .header("Connection", "keep-alive")
+          .followRedirects(true);
+
+      Document doc = connection.get();
 
       // Select and process relevant elements (modify selectors based on the site's structure)
       Elements results = doc.select("div.search-result"); // Example selector
